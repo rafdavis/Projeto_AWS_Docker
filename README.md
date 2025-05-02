@@ -20,6 +20,7 @@ Para realizar o projeto é preciso criar duas instâncias na AWS com um Docker c
 - 1 NAT gateway
 
 ![](imgs/vpcConfig.png)
+
 ![](imgs/vpcArchitecture.png)
 
 ## Etapa 2: Configuração dos Security Groups
