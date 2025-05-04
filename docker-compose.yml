@@ -2,11 +2,12 @@ services:
 
   wordpress:
     image: wordpress
+    container_name: wordpress
     restart: always
     ports:
       - 80:80
     environment:
-      WORDPRESS_DB_HOST: db-wordpress.cqhgoqakquv7.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_HOST: db-wordpress.cqhgoqakquv7.us-east-1.rds.amazonaws.com:3306
       WORDPRESS_DB_USER: admin
       WORDPRESS_DB_PASSWORD: cgGRL34X1qFqTVkWDlrR
       WORDPRESS_DB_NAME: wordpress
