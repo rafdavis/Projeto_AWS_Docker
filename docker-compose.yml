@@ -4,7 +4,7 @@ services:
     image: wordpress
     restart: always
     ports:
-      - 8080:80
+      - 80:80
     environment:
       WORDPRESS_DB_HOST: db-wordpress.cqhgoqakquv7.us-east-1.rds.amazonaws.com
       WORDPRESS_DB_USER: admin
