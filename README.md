@@ -99,7 +99,7 @@ Acesse Aurora e RDS, e criar Banco de Dados
 
 ![](imgs/additionalConfigDB.png)
 
-### Após todas as configurações é criar o Banco de Dados
+### Após todas as configurações é só criar o Banco de Dados
 
 ![](imgs/createDB.png)
 
