@@ -274,3 +274,39 @@ Acesse **EC2 -> Auto Scaling Groups -> Criar Auto Scaling Group**
 ### Cole o **DNS NAME** no navegador e faça o cadastro no Wordpress
 
 ![](imgs/loginWP.png)
+
+## Bônus:
+
+### Criação de Política de Escalabilidade
+
+Acesse **EC2 -> Auto Scaling Group -> selecione o Auto Scaling Group criado -> Automatic Scaling -> Create Automatic Scaling**
+
+### Selecione **Simple Scaling**, nomeie a política, selecione **Add** como ação, 1 na quantidade de aumento e **Capacity Units**
+
+![](imgs/policy.png)
+
+### Criação de Alarmes CloudWatch
+
+Acesse **CloudWatch -> Alarmes -> Criar Alarme**
+
+### Passo 1: Selecione a métrica **EC2 -> Auto Scaling Group -> CPUUtilization**
+
+![](imgs/step1¹CW.png)
+
+- Selecione **Greater/Equal** e **70** no **than**
+
+![](imgs/step1²CW.png)
+
+### Passo 2: Selecione o Auto Scaling Group criado anteriormente e a política de Adição
+
+![](imgs/step2CW.png)
+
+### Passo 3: Nomeie o alarme e se desejar escreva um breve descrição
+
+![](imgs/step3CW.png)
+
+### Passo 4: Revise as configurações e crie o alarme
+
+![](imgs/step4CW.png)
+
+### Repita os mesmos passos de criação de **Política de Escalabidade** e **Alarme** para diminuir uma instância
