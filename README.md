@@ -17,11 +17,11 @@ Para realizar o projeto é preciso criar duas instâncias na AWS com um Docker c
 ### Procure por VPC, selecione criar VPC e siga as configurações: 
 - 2 sub-redes públicas
 - 2 sub-redes privadas
-- 1 NAT gateway
+- 1 NAT gateway por AZ
 
 ![](imgs/vpcConfig.png)
 
-![](imgs/vpcArchitecture.png)
+![](imgs/vpcConfig2.png)
 
 ## Etapa 2: Configuração dos Security Groups
 
@@ -43,11 +43,13 @@ Acesse Security Groups, selecione criar Security Groups e siga as configuraçõe
 
 #### Inbound Rules:
 - HTTP - SG-LB
+- NFS - SG-EFS
 
 #### Outbound Rules:
 - HTTP - SG-LB
 - MYSQL/Aurora - SG-RDS
 - NFS - SG-EFS
+- All Trafic - 0.0.0.0
 
 ### Banco de Dados RDS:
 
@@ -118,9 +120,9 @@ Acesse o **EFS** -> **Create File System**
 
 ### Após a criação da EFS, acesse-a e selecione **Network -> Manage**
 
-- Crie dois Mount Target e selecione o Security Group da EFS
+- Crie dois Mount Target, selecione o Security Group da EFS e as sub-redes privadas
 
-![](imgs/efsNetwork.png)
+
 
 ### Após criar os pontos de montagem, clique em anexar:
 
@@ -132,10 +134,9 @@ sudo mount -t efs -o tls mount:/ efs
 
 ![](imgs/attach.png)
 
-
 ## Etapa 5: Criação do Load Balancer
 
-Acesse **EC2** -> **Load Balancer** -> **Criar Load Balancer** -> **Classic Load Balancer**
+Acesse **EC2** -> **Load Balancer** -> **Criar Load Balancer** -> **Load Balancer Clássico**
 
 
 ### Escolha um nome e o esquema **Internet-facing**:
@@ -146,7 +147,7 @@ Acesse **EC2** -> **Load Balancer** -> **Criar Load Balancer** -> **Classic Load
 
 ![](imgs/networkLB.png)
 
-### Selecione o Security Group criado e altere o caminho de ping:
+### Selecione o Security Group e altere caminho do ping:
 
 ![](imgs/securityLB.png)
 
@@ -212,8 +213,64 @@ Acesse **EC2** -> **Launch Template** -> **Criar Launch Template**
 
 ![](imgs/configNetworkLT.png)
 
-### Em detalhes avançados no campo User data, cole o script user data:
+### Em detalhes avançados -> User data, cole o script user data:
 
-![](imgs/userData.png)
+![](imgs/userDataLT.png)
 
-### Após isso é só criar o Launch Template
+### Após isso, é só criar o Launch Template
+
+## Etapa 7: Criação do Auto Scaling Group
+
+Acesse **EC2 -> Auto Scaling Groups -> Criar Auto Scaling Group**
+
+### Passo 1: Digite o nome do Auto Scaling Group e selecione o Launch Template criado:
+
+![](imgs/step1ASG.png)
+
+### Passo 2: Selecione a **VPC** e as **sub-redes privadas**:
+
+![](imgs/step2ASG.png)
+
+### Passo 3: Selecione o **Anexar ao Load Balancer** e **Escolha Load Balancer Clássico**:
+
+![](imgs/step3¹ASG.png)
+
+- Habilite o **Elastic Load Balancing Health Checks**:
+
+![](imgs/step3²ASG.png)
+
+### Passo 4: Selecione a capacidade inicial, mínima e máxima, respectivamente (2,2,3):
+
+![](imgs/step4¹ASG.png)
+
+- Habilite a coleta de métricas do CloudWatch
+
+![](imgs/step4²ASG.png)
+
+### Passo 5: Prossiga para o passo 6
+
+### Passo 6: Caso desejar, adicione tags para identificar o Auto Scaling Group:
+
+![](imgs/step6ASG.png)
+
+### Passo 7: Revise todos os passos anteriores e crie o Auto Scaling Group:
+
+![](imgs/step7¹ASG.png)
+![](imgs/step7²ASG.png)
+![](imgs/step7³ASG.png)
+
+## Etapa 8: Acesso a página do Wordpress
+
+### Após criar o Auto Scaling Group, acesse **EC2 -> Instâncias** e confira se as instâncias foram criadas
+
+![](imgs/ec2ASG.png)
+
+### Acesse **EC2 -> Load Balancer** e copie **DNS NAME** para acessar a página do Wordpress
+
+![](imgs/lbASG.png)
+
+> ⚠️ **ATENÇÃO:** Espere até a instância estar inicializada para colar no navegador o **DNS NAME**
+
+### Cole o **DNS NAME** no navegador e faça o cadastro no Wordpress
+
+![](imgs/loginWP.png)
